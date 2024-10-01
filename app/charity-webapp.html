@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Web App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .project {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .project img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Charity Web App</h1>
+        
+        <div id="businessOwnerSection">
+            <h2>Create a Charity Project</h2>
+            <input type="text" id="projectName" placeholder="Project Name">
+            <input type="text" id="imageUrl" placeholder="Image URL">
+            <textarea id="description" placeholder="Project Description"></textarea>
+            <button onclick="createProject()">Create Project</button>
+        </div>
+        
+        <div id="userSection">
+            <h2>Open Charity Projects</h2>
+            <div id="projectList"></div>
+        </div>
+    </div>
+
+    <script>
+        let projects = [];
+
+        function createProject() {
+            const name = $('#projectName').val();
+            const imageUrl = $('#imageUrl').val();
+            const description = $('#description').val();
+            
+            if (name && imageUrl && description) {
+                projects.push({ name, imageUrl, description });
+                updateProjectList();
+                clearInputs();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        function updateProjectList() {
+            const projectList = $('#projectList');
+            projectList.empty();
+            
+            projects.forEach((project, index) => {
+                const projectHtml = `
+                    <div class="project">
+                        <h3>${project.name}</h3>
+                        <img src="${project.imageUrl}" alt="${project.name}">
+                        <p>${project.description}</p>
+                        <button onclick="donate(${index})">Donate</button>
+                    </div>
+                `;
+                projectList.append(projectHtml);
+            });
+        }
+
+        function clearInputs() {
+            $('#projectName').val('');
+            $('#imageUrl').val('');
+            $('#description').val('');
+        }
+
+        function donate(index) {
+            const amount = prompt('Enter donation amount:');
+            if (amount) {
+                alert(`Thank you for donating $${amount} to ${projects[index].name}!`);
+            }
+        }
+    </script>
+</body>
+</html>
